@@ -1,23 +1,30 @@
 // GAME PLAN
-// Make a prompt, that branches into other prompts.
+// Make an inquirer prompt, that branches into other prompts.
+// -------------------------
 // Main menu prompt function
     // View All Employees
+        // Display All Employees
+        // Repeat menu prompt
     // Add Employee
+        // IF there's a department AND IF there's an employee type available
+        // Repeat menu prompt
     // Update Employee Role
+        // If there's a department
+        // If the role that they want to change exists
+            // Then select the role and change to what the input is
+
     // View All Roles
+        // select all roles from all departmets then print them
     // Add Role
+        // Add role to table
+
     // View All Departments
         // Display All Departments
-        // Call main menu function again
+        // Repeat menu prompt
     // Add Department
+        // Insert department into db
     // Quit
     
-const express = require('express');
+const inquirer = require('inquirer');
 const mysql = require('mysql2');
-
-const PORT = process.env.PORT || 3001;
-const app = express();
-
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
 

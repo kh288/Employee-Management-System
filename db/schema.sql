@@ -5,7 +5,7 @@ USE company;
 
 CREATE TABLE department (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name INT
+    name VARCHAR(30)
 );
 
 CREATE TABLE role (
