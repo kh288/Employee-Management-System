@@ -4,11 +4,11 @@ const mysql = require('mysql2');
 // Placeholder Function to display the datatbase quieries
 function displayDB() {
     console.log("+-------------------------------------------------+");
-    console.log("|   _____           _                             |");
-    console.log("|  |   __|_____ ___| |___ _ _ ___ ___             |");
-    console.log("|  |   __|     | . | | . | | | -_| -_|            |");
-    console.log("|  |_____|_|_|_|  _|_|___|_  |___|___|            |");
-    console.log("|              |_|       |___|                    |");
+    console.log("|        _____           _                        |");
+    console.log("|       |   __|_____ ___| |___ _ _ ___ ___        |");
+    console.log("|       |   __|     | . | | . | | | -_| -_|       |");
+    console.log("|       |_____|_|_|_|  _|_|___|_  |___|___|       |");
+    console.log("|                   |_|       |___|               |");
     console.log("|   _____                                   _     |");
     console.log("|  |     |___ ___ ___ ___ ___ _____ ___ ___| |_   |");
     console.log("|  | | | | .'|   | .'| . | -_|     | -_|   |  _|  |");
@@ -18,6 +18,34 @@ function displayDB() {
     console.log("");
     console.log(`Select from the list what you'd like to do`);
     console.log("");
+}
+
+function viewAllEmployees() {
+    console.log(`SELECTED: View All Employees`);
+}
+
+function addEmployee() {
+    console.log(`SELECTED: Add Employee`);
+}
+
+function updateEmployeeRole() {
+    console.log(`SELECTED: Update Employee Role`);
+}
+
+function viewAllRoles() {
+    console.log(`SELECTED: View All Roles`);
+}
+
+function addRole() {
+    console.log(`SELECTED: Add Role`);
+}
+
+function viewAllDepartments() {
+    console.log(`SELECTED: View All Departments`);
+}
+
+function addDepartment() {
+    console.log(`SELECTED: Add Department`);
 }
 
 function mainMenu() {
@@ -39,32 +67,25 @@ function mainMenu() {
         console.log(`A choice was made`);
         switch(answer.menu) {
             case(`View All Employees`):
-                console.log(`SELECTED: ${answer.menu}`);
-                // viewAllEmployees();
+                viewAllEmployees();
                 break;
             case(`Add Employee`):
-                console.log(`SELECTED: ${answer.menu}`);
-                // addEmployee();
+                addEmployee();
                 break;
             case(`Update Employee Role`):
-                console.log(`SELECTED: ${answer.menu}`);
-                // updateEmployeeRole();
+                updateEmployeeRole();
                 break;
             case(`View All Roles`):
-                console.log(`SELECTED: ${answer.menu}`);
-                // viewAllRoles();
+                viewAllRoles();
                 break;
             case(`Add Role`):
-                console.log(`SELECTED: ${answer.menu}`);
-                // addRole();
+                addRole();
                 break;
             case(`View All Departments`):
-                console.log(`SELECTED: ${answer.menu}`);
-                // viewAllDepartments();
+                viewAllDepartments();
                 break;
             case(`Add Department`):
-                console.log(`SELECTED: ${answer.menu}`);
-                // addDepartment();
+                addDepartment();
                 break;
             case(`Quit`):
                 console.log(`SELECTED: ${answer.menu}, Goodbye!`);
