@@ -2,7 +2,7 @@ const inquirer = require('inquirer');
 const mysql = require('mysql2');
 
 // Placeholder Function to display the datatbase quieries
-function displayDB() {
+function intro() {
     console.log("+-------------------------------------------------+");
     console.log("|        _____           _                        |");
     console.log("|       |   __|_____ ___| |___ _ _ ___ ___        |");
@@ -26,30 +26,35 @@ function viewAllEmployees() {
 
 function addEmployee() {
     console.log(`SELECTED: Add Employee`);
+    mainMenu();
 }
 
 function updateEmployeeRole() {
     console.log(`SELECTED: Update Employee Role`);
+    mainMenu();
 }
 
 function viewAllRoles() {
     console.log(`SELECTED: View All Roles`);
+    mainMenu();
 }
 
 function addRole() {
     console.log(`SELECTED: Add Role`);
+    mainMenu();
 }
 
 function viewAllDepartments() {
     console.log(`SELECTED: View All Departments`);
+    mainMenu();
 }
 
 function addDepartment() {
     console.log(`SELECTED: Add Department`);
+    mainMenu();
 }
 
 function mainMenu() {
-    displayDB();
     inquirer.prompt([{
         type: `list`,
         message: `Main Menu`,
@@ -94,4 +99,9 @@ function mainMenu() {
     });
 }
 
-mainMenu();
+function init() {
+    intro();
+    mainMenu();
+}
+
+init();
