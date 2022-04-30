@@ -11,6 +11,7 @@
         // Call main menu function again
     // Add Department
     // Quit
+    
 const express = require('express');
 const mysql = require('mysql2');
 
