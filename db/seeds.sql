@@ -15,8 +15,9 @@ VALUES
 -- MANAGEMENT: 4
 -- FINANCING-: 5
 
--- SELECT * FROM company.role;
 
+
+-- SELECT * FROM company.role;
 INSERT INTO role(title, salary, department_id)
 VALUES
     ("Manager", 160000, 1),
@@ -29,6 +30,9 @@ VALUES
 -- ENGINEER: 2
 -- INTERN--: 3
 
+
+
+-- SELECT * FROM company.employee;
 INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES 
     ("John", "Doe", 1, 1),
