@@ -1,31 +1,57 @@
+// Delcaring Globals
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
+// const express = require('express');
+
+const db = mysql.createConnection(
+    {
+      host: 'localhost',
+      // MySQL username,
+      user: 'root',
+      // TODO: Add MySQL password here
+      password: 'password',
+      database: 'company'
+    },
+    console.log(`Connected to the company database.`)
+  );
 
 // Placeholder Function to display the datatbase quieries
 function intro() {
-    console.log("+-------------------------------------------------+");
-    console.log("|        _____           _                        |");
-    console.log("|       |   __|_____ ___| |___ _ _ ___ ___        |");
-    console.log("|       |   __|     | . | | . | | | -_| -_|       |");
-    console.log("|       |_____|_|_|_|  _|_|___|_  |___|___|       |");
-    console.log("|                   |_|       |___|               |");
-    console.log("|   _____                                   _     |");
-    console.log("|  |     |___ ___ ___ ___ ___ _____ ___ ___| |_   |");
-    console.log("|  | | | | .'|   | .'| . | -_|     | -_|   |  _|  |");
-    console.log("|  |_|_|_|__,|_|_|__,|_  |___|_|_|_|___|_|_|_|    |");
-    console.log("|                    |___|                        |");
-    console.log("+-------------------------------------------------+");
-    console.log("");
+    console.log(`
++-------------------------------------------------+
+|        _____           _                        |
+|       |   __|_____ ___| |___ _ _ ___ ___        |
+|       |   __|     | . | | . | | | -_| -_|       |
+|       |_____|_|_|_|  _|_|___|_  |___|___|       |
+|                   |_|       |___|               |
+|   _____                                   _     |
+|  |     |___ ___ ___ ___ ___ _____ ___ ___| |_   |
+|  | | | | .'|   | .'| . | -_|     | -_|   |  _|  |
+|  |_|_|_|__,|_|_|__,|_  |___|_|_|_|___|_|_|_|    |
+|                    |___|                        |
++-------------------------------------------------+
+`);
     console.log(`Select from the list what you'd like to do`);
-    console.log("");
 }
 
 function viewAllEmployees() {
     console.log(`SELECTED: View All Employees`);
+    // SQL command to execute
+    const sql = `SELECT * FROM employee`;
+    // database querying for the employee table
+    db.query(sql, (error, rows) => {
+        if (error){
+            console.log("Error");
+            return;
+        }
+        console.log(rows);
+    });
+    mainMenu();
 }
 
 function addEmployee() {
     console.log(`SELECTED: Add Employee`);
+
     mainMenu();
 }
 
@@ -36,6 +62,16 @@ function updateEmployeeRole() {
 
 function viewAllRoles() {
     console.log(`SELECTED: View All Roles`);
+    // SQL command to execute
+    const sql = `SELECT * FROM role`;
+    // database querying for the employee table
+    db.query(sql, (error, rows) => {
+        if (error){
+            console.log(`Error: ${error}`);
+            return;
+        }
+        console.log(rows);
+    });
     mainMenu();
 }
 
@@ -93,7 +129,7 @@ function mainMenu() {
                 addDepartment();
                 break;
             case(`Quit`):
-                console.log(`SELECTED: ${answer.menu}, Goodbye!`);
+                console.log(`Goodbye!`);
                 break;
         }
     });
