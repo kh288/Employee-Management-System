@@ -37,7 +37,7 @@ function intro() {
 function viewAllEmployees() {
     console.log(`SELECTED: View All Employees`);
     // SQL command to execute
-    const sql = `SELECT * FROM employee`;
+    const sql = `SELECT * FROM company.employee;`;
     // database querying for the employee table
     db.query(sql, (error, rows) => {
         if (error){
@@ -63,8 +63,8 @@ function updateEmployeeRole() {
 function viewAllRoles() {
     console.log(`SELECTED: View All Roles`);
     // SQL command to execute
-    const sql = `SELECT * FROM role`;
-    // database querying for the employee table
+    const sql = `SELECT * FROM company.role;`;
+    // database querying for the role table
     db.query(sql, (error, rows) => {
         if (error){
             console.log(`Error: ${error}`);
@@ -82,6 +82,16 @@ function addRole() {
 
 function viewAllDepartments() {
     console.log(`SELECTED: View All Departments`);
+    // SQL command to execute
+    const sql = `SELECT * FROM company.department;`;
+    // database querying for the department table
+    db.query(sql, (error, rows) => {
+        if (error){
+            console.log(`Error: ${error}`);
+            return;
+        }
+        console.log(rows);
+    });
     mainMenu();
 }
 
