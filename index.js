@@ -1,10 +1,9 @@
 // Delcaring Globals
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
-// const express = require('express');
+const consTable = require('console.table');
 
-const db = mysql.createConnection(
-    {
+const db = mysql.createConnection({
       host: 'localhost',
       // MySQL username,
       user: 'root',
@@ -12,10 +11,9 @@ const db = mysql.createConnection(
       password: 'password',
       database: 'company'
     },
-    console.log(`Connected to the company database.`)
-  );
+    console.log(`Connected to the company database.`));
 
-// Placeholder Function to display the datatbase quieries
+// Intro banner function
 function intro() {
     console.log(`
 +-------------------------------------------------+
@@ -43,10 +41,12 @@ function viewAllEmployees() {
         if (error){
             console.log("Error");
             return;
+        } else {
+            console.clear();
+            console.table(rows);
         }
-        console.log(rows);
+        mainMenu();
     });
-    mainMenu();
 }
 
 function addEmployee() {
@@ -69,10 +69,12 @@ function viewAllRoles() {
         if (error){
             console.log(`Error: ${error}`);
             return;
+        } else {
+            console.clear();
+            console.table(rows);
         }
-        console.log(rows);
+        mainMenu();
     });
-    mainMenu();
 }
 
 function addRole() {
@@ -89,10 +91,12 @@ function viewAllDepartments() {
         if (error){
             console.log(`Error: ${error}`);
             return;
+        } else {
+            console.clear();
+            console.table(rows);
         }
-        console.log(rows);
+        mainMenu();
     });
-    mainMenu();
 }
 
 function addDepartment() {
@@ -140,6 +144,7 @@ function mainMenu() {
                 break;
             case(`Quit`):
                 console.log(`Goodbye!`);
+                db.end();
                 break;
         }
     });
