@@ -21,8 +21,7 @@ function intro() {
 |       |   __|_____ ___| |___ _ _ ___ ___        |
 |       |   __|     | . | | . | | | -_| -_|       |
 |       |_____|_|_|_|  _|_|___|_  |___|___|       |
-|                   |_|       |___|               |
-|   _____                                   _     |
+|   _____           |_|       |___|         -     |
 |  |     |___ ___ ___ ___ ___ _____ ___ ___| |_   |
 |  | | | | .'|   | .'| . | -_|     | -_|   |  _|  |
 |  |_|_|_|__,|_|_|__,|_  |___|_|_|_|___|_|_|_|    |
@@ -33,6 +32,7 @@ function intro() {
 }
 
 function viewAllEmployees() {
+    console.clear();
     console.log(`SELECTED: View All Employees`);
     // SQL command to execute
     const sql = `SELECT * FROM company.employee;`;
@@ -42,7 +42,6 @@ function viewAllEmployees() {
             console.log("Error");
             return;
         } else {
-            console.clear();
             console.table(rows);
         }
         mainMenu();
@@ -50,17 +49,19 @@ function viewAllEmployees() {
 }
 
 function addEmployee() {
+    console.clear();
     console.log(`SELECTED: Add Employee`);
-
     mainMenu();
 }
 
 function updateEmployeeRole() {
+    console.clear();
     console.log(`SELECTED: Update Employee Role`);
     mainMenu();
 }
 
 function viewAllRoles() {
+    console.clear();
     console.log(`SELECTED: View All Roles`);
     // SQL command to execute
     const sql = `SELECT * FROM company.role;`;
@@ -70,7 +71,6 @@ function viewAllRoles() {
             console.log(`Error: ${error}`);
             return;
         } else {
-            console.clear();
             console.table(rows);
         }
         mainMenu();
@@ -78,11 +78,24 @@ function viewAllRoles() {
 }
 
 function addRole() {
+    console.clear();
     console.log(`SELECTED: Add Role`);
-    mainMenu();
+    // SQL command to execute
+    const sql = `SELECT * FROM company.role;`;
+    // database querying for the department table
+    db.query(sql, (error, rows) => {
+        if (error){
+            console.log(`Error: ${error}`);
+            return;
+        } else {
+            console.table(rows);
+        }
+        mainMenu();
+    });
 }
 
 function viewAllDepartments() {
+    console.clear();
     console.log(`SELECTED: View All Departments`);
     // SQL command to execute
     const sql = `SELECT * FROM company.department;`;
@@ -92,7 +105,7 @@ function viewAllDepartments() {
             console.log(`Error: ${error}`);
             return;
         } else {
-            console.clear();
+
             console.table(rows);
         }
         mainMenu();
@@ -100,6 +113,7 @@ function viewAllDepartments() {
 }
 
 function addDepartment() {
+    console.clear();
     console.log(`SELECTED: Add Department`);
     mainMenu();
 }
@@ -151,6 +165,7 @@ function mainMenu() {
 }
 
 function init() {
+    console.clear();
     intro();
     mainMenu();
 }
