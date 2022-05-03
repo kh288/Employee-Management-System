@@ -68,18 +68,83 @@ function viewAllEmployees() {
 
 function addEmployee() {
     console.clear();
-    console.log(`SELECTED: Add Employee`);
+    console.log(`SELECTED: Add Employee
+    `);
+    db.query(`SELECT DISTINCT id, title FROM role;`, (error, roles) => {
+        if (error) throw (error);
+        let sql = `
+        SELECT DISTINCT CONCAT(e.first_name, " ", e.last_name) AS manager_name,e.id
+        FROM employee
+            LEFT JOIN employee e
+            ON employee.manager_id = e.id
+            WHERE employee.manager_id IS NOT NULL;`;
+        db.query(sql, (error, managers) => {
+            if (error) throw (error);
+
+            inquirer.prompt([{
+                type: "input",
+                message: "Employee's First Name",
+                name: "firstName",
+            },{
+                type: "input",
+                message: "Employee's Last Name",
+                name: "lastName",
+            },{
+                type: "list",
+                message: "Choose the employee's role",
+                name: "role",
+                choices: () =>
+                    roles.map((roles) => roles.title),
+            },{
+                type: "list",
+                message: "Choose the employee's manager",
+                name: "manager",
+                choices: () =>
+                    managers.map((managers) => managers.manager_name)
+            }]).then((result) => {
+                const managerID = managers.filter((managers) => managers.manager_name === result.manager)[0].id;
+                const roleID = roles.filter((roles) => roles.title === result.role)[0].id;
+
+                // console.log(`Should be 1: ${managerID}`);
+                // console.log(`Should be 2: ${roleID}`);
+                console.log(`
+                    ${result.firstName},
+                    ${result.lastName},
+                    ${roleID},
+                    ${managerID}
+                    `);
+                
+                let insertSQL = `
+                    USE company_db;
+                    INSERT INTO employee(first_name, last_name, role_id, manager_id)
+                    VALUES(?, ?, ?, ?)`;
+                let data = {
+                    first_name: result.firstName,
+                    last_name: result.lastName,
+                    role_id: roleID,
+                    manager_id: managerID
+                };
+                db.query(insertSQL, data, (error, rows) => {
+                    if (error) throw (error);
+                    console.log(`Added ${result.firstName} ${result.lastName} to Employees table`)
+                    mainMenu();
+                });
+            });
+        });
+    });
 }
 
 function updateEmployeeRole() {
     console.clear();
-    console.log(`SELECTED: Update Employee Role`);
+    console.log(`SELECTED: Update Employee Role
+    `);
     mainMenu();
 }
 // Function to view our roles table in our SQL database
 function viewAllRoles() {
     console.clear();
-    console.log(`SELECTED: View All Roles`);
+    console.log(`SELECTED: View All Roles
+    `);
     // SQL command to execute
     const sql =
     `SELECT 
@@ -106,7 +171,8 @@ function viewAllRoles() {
 // Function to add a role element into our Role Table in our SQL database
 function addRole() {
     console.clear();
-    console.log(`SELECTED: Add Role`);
+    console.log(`SELECTED: Add Role
+    `);
     // DELETE FROM `company`.`role` WHERE (`id` = '4');
 
     // GET DEPARTMENT LIST
@@ -171,7 +237,8 @@ function addRole() {
 // Function to view our department table in our SQL database
 function viewAllDepartments() {
     console.clear();
-    console.log(`SELECTED: View All Departments`);
+    console.log(`SELECTED: View All Departments
+    `);
     // SQL command to execute
     const sql = `SELECT
                     department.id AS ID,
@@ -243,9 +310,9 @@ function mainMenu() {
         `Add Department`,
         `Quit`],
         name: `menu`
-    }]).then((answer) => {
+    }]).then((result) => {
         console.log(`A choice was made`);
-        switch(answer.menu) {
+        switch(result.menu) {
             case(`View All Employees`):
                 viewAllEmployees();
                 break;
