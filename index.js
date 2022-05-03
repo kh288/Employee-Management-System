@@ -35,7 +35,22 @@ function viewAllEmployees() {
     console.clear();
     console.log(`SELECTED: View All Employees`);
     // SQL command to execute
-    const sql = `SELECT * FROM company.employee;`;
+    const sql =
+    `SELECT
+        employee.id,
+        employee.first_name,
+        employee.last_name,
+        title, name AS department,
+        salary,
+        CONCAT(em.first_name,' ',em.last_name) AS manager
+            FROM employee
+            LEFT JOIN role
+            ON employee.role_id = role.id
+            LEFT JOIN department
+            ON role.department_id = department.id
+            LEFT JOIN employee em
+            ON employee.manager_id = em.id
+            ORDER BY employee.id;`;
     // database querying for the employee table
     db.query(sql, (error, rows) => {
         if (error){
