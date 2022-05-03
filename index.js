@@ -51,7 +51,6 @@ function viewAllEmployees() {
 function addEmployee() {
     console.clear();
     console.log(`SELECTED: Add Employee`);
-    mainMenu();
 }
 
 function updateEmployeeRole() {
@@ -80,6 +79,8 @@ function viewAllRoles() {
 function addRole() {
     console.clear();
     console.log(`SELECTED: Add Role`);
+
+    // DELETE FROM `company`.`role` WHERE (`id` = '4');
 
     // GET DEPARTMENT LIST
     // STORE DEPARTMENT LIST INTO CHOICES FOR INQUIRER
@@ -127,10 +128,7 @@ function addRole() {
                 }
             });
         });
-        
     });
-
-
 }
 
 function viewAllDepartments() {
@@ -149,7 +147,6 @@ function viewAllDepartments() {
             rows.forEach(element => {
                 departments.push(element);
             });
-            console.log(departments);
             console.table(rows);
         }
         mainMenu();
