@@ -9,7 +9,7 @@ const db = mysql.createConnection({
       user: 'root',
       // TODO: Add MySQL password here
       password: 'password',
-      database: 'company'
+      database: 'company_db'
     },
     console.log(`Connected to the company database.`));
 
@@ -33,23 +33,26 @@ function intro() {
 
 function viewAllEmployees() {
     console.clear();
-    console.log(`SELECTED: View All Employees`);
+    console.log(`SELECTED: View All Employees
+    `);
     // SQL command to execute
+    
     const sql =
     `SELECT
-        employee.id,
-        employee.first_name,
-        employee.last_name,
-        title, name AS department,
-        salary,
-        CONCAT(em.first_name,' ',em.last_name) AS manager
-            FROM employee
-            LEFT JOIN role
+        employee.id AS ID,
+        employee.first_name AS FirstName,
+        employee.last_name AS LastName,
+        title AS Title,
+        name AS Department,
+        salary AS Salary,
+        CONCAT(e.first_name,' ',e.last_name) AS Manager
+    FROM employee
+        LEFT JOIN role
             ON employee.role_id = role.id
-            LEFT JOIN department
+        LEFT JOIN department
             ON role.department_id = department.id
-            LEFT JOIN employee em
-            ON employee.manager_id = em.id
+        LEFT JOIN employee e
+            ON employee.manager_id = e.id
             ORDER BY employee.id;`;
     // database querying for the employee table
     db.query(sql, (error, rows) => {
@@ -79,11 +82,15 @@ function viewAllRoles() {
     console.log(`SELECTED: View All Roles`);
     // SQL command to execute
     const sql =
-    `SELECT role.id,title, department.name AS department,salary
+    `SELECT 
+        role.id AS ID,
+        title AS Title, 
+        department.name AS Department,
+        salary AS Salary
     FROM role LEFT
-    JOIN department 
-    ON role.department_id = department.id
-    ORDER BY role.id;`;
+        JOIN department 
+        ON role.department_id = department.id
+        ORDER BY role.id;`;
     // database querying for the role table
     db.query(sql, (error, rows) => {
         if (error){
@@ -99,13 +106,12 @@ function viewAllRoles() {
 function addRole() {
     console.clear();
     console.log(`SELECTED: Add Role`);
-
     // DELETE FROM `company`.`role` WHERE (`id` = '4');
 
     // GET DEPARTMENT LIST
     // STORE DEPARTMENT LIST INTO CHOICES FOR INQUIRER
     // database querying for the department table
-    db.query(`SELECT * FROM company.department;`, (error, rows) => {
+    db.query(`SELECT * FROM department;`, (error, rows) => {
         if (error) throw (error);
         console.log("Adding a new role");
         
@@ -134,12 +140,22 @@ function addRole() {
             }
             // SQL command to execute
             let promptData = [result.title, result.salary, departmentId];
-            let sql = `INSERT INTO company.role(title, salary, department_id) VALUES(?, ?, ?)`;
+            let sql = `INSERT INTO role(title, salary, department_id) VALUES(?, ?, ?)`;
             // database querying for the department table
             db.query(sql, promptData, (error, rows2) => {
                 if (error) throw (error)
                 else {
-                    db.query(`SELECT * FROM company.role;`, (error, result) => {
+                    let sql = 
+                    `SELECT 
+                        role.id AS ID,
+                        title AS Title, 
+                        department.name AS Department,
+                        salary AS Salary
+                    FROM role LEFT
+                        JOIN department 
+                        ON role.department_id = department.id
+                        ORDER BY role.id;`;
+                    db.query(sql, (error, result) => {
                         if (error) throw (error);
                         console.table(result);
                         // Once done, iterate through the main menu loop again
@@ -155,7 +171,10 @@ function viewAllDepartments() {
     console.clear();
     console.log(`SELECTED: View All Departments`);
     // SQL command to execute
-    const sql = `SELECT * FROM company.department;`;
+    const sql = `SELECT
+                    department.id AS ID,
+                    name as Name
+                FROM department;`;
     // database querying for the department table
 
     let departments = [];

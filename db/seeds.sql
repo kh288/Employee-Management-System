@@ -4,7 +4,6 @@ VALUES
     ("Research"),
     ("Operations"),
     ("Marketing"),
-    ("Management"),
     ("Financing");
 
 -- |KEYS FOR DEPARTMENT|
