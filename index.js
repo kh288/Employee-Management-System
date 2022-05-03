@@ -63,7 +63,12 @@ function viewAllRoles() {
     console.clear();
     console.log(`SELECTED: View All Roles`);
     // SQL command to execute
-    const sql = `SELECT * FROM company.role;`;
+    const sql =
+    `SELECT role.id,title, department.name AS department,salary
+    FROM role LEFT
+    JOIN department 
+    ON role.department_id = department.id
+    ORDER BY role.id;`;
     // database querying for the role table
     db.query(sql, (error, rows) => {
         if (error){
