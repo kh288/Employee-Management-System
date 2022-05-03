@@ -16,17 +16,17 @@ const db = mysql.createConnection({
 // Intro banner function
 function intro() {
     console.log(`
-+-------------------------------------------------+
-|        _____           _                        |
-|       |   __|_____ ___| |___ _ _ ___ ___        |
-|       |   __|     | . | | . | | | -_| -_|       |
-|       |_____|_|_|_|  _|_|___|_  |___|___|       |
-|   _____           |_|       |___|         -     |
-|  |     |___ ___ ___ ___ ___ _____ ___ ___| |_   |
-|  | | | | .'|   | .'| . | -_|     | -_|   |  _|  |
-|  |_|_|_|__,|_|_|__,|_  |___|_|_|_|___|_|_|_|    |
-|                    |___|                        |
-+-------------------------------------------------+
+┌─────────────────────────────────────────────────┐
+│        _____           _                        │
+│       |   __|_____ ___| |___ _ _ ___ ___        │
+│       |   __|     | . | | . | | | -_| -_|       │
+│       |_____|_|_|_|  _|_|___|_  |___|___|       │
+│   _____           |_|       |___|         -     │
+│  |     |___ ___ ___ ___ ___ _____ ___ ___| |_   │
+│  | | | | .'|   | .'| . | -_|     | -_|   |  _|  │
+│  |_|_|_|__,|_|_|__,|_  |___|_|_|_|___|_|_|_|    │
+│                    |___|                        │
+└─────────────────────────────────────────────────┘
 `);
     console.log(`Select from the list what you'd like to do`);
 }
@@ -80,18 +80,57 @@ function viewAllRoles() {
 function addRole() {
     console.clear();
     console.log(`SELECTED: Add Role`);
-    // SQL command to execute
-    const sql = `SELECT * FROM company.role;`;
+
+    // GET DEPARTMENT LIST
+    // STORE DEPARTMENT LIST INTO CHOICES FOR INQUIRER
     // database querying for the department table
-    db.query(sql, (error, rows) => {
-        if (error){
-            console.log(`Error: ${error}`);
-            return;
-        } else {
-            console.table(rows);
-        }
-        mainMenu();
+    db.query(`SELECT * FROM company.department;`, (error, rows) => {
+        if (error) throw (error);
+        console.log("Adding a new role");
+        
+        // Prompt user for adding role data
+        inquirer.prompt([{
+            type: `input`,
+            message: `Title`,
+            name: `title`,
+        },{
+            type: `number`,
+            message: `Enter a Salary for this role`,
+            name: `salary`,
+        },{
+            type: `list`,
+            message: `Department`,
+            choices: () =>
+                rows.map((result) => result.name),
+            name: `department`
+        }]).then((result) => {
+            // Iterate through our SQL data to get the ID
+            let departmentId;
+            for (var i = 0; i < rows.length; i++) {
+                if (rows[i].name === result.department) {
+                    departmentId = rows[i].id;
+                }
+            }
+            // SQL command to execute
+            let promptData = [result.title, result.salary, departmentId];
+            let sql = `INSERT INTO company.role(title, salary, department_id) VALUES(?, ?, ?)`;
+            // database querying for the department table
+            db.query(sql, promptData, (error, rows2) => {
+                if (error) throw (error)
+                else {
+                    db.query(`SELECT * FROM company.role;`, (error, result) => {
+                        if (error) throw (error);
+                        console.table(result);
+                        // Once done, iterate through the main menu loop again
+                        mainMenu();
+                    });
+                }
+            });
+        });
+        
     });
+
+
 }
 
 function viewAllDepartments() {
@@ -100,12 +139,17 @@ function viewAllDepartments() {
     // SQL command to execute
     const sql = `SELECT * FROM company.department;`;
     // database querying for the department table
+
+    let departments = [];
     db.query(sql, (error, rows) => {
         if (error){
             console.log(`Error: ${error}`);
             return;
         } else {
-
+            rows.forEach(element => {
+                departments.push(element);
+            });
+            console.log(departments);
             console.table(rows);
         }
         mainMenu();
