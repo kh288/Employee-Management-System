@@ -76,7 +76,7 @@ function updateEmployeeRole() {
     console.log(`SELECTED: Update Employee Role`);
     mainMenu();
 }
-
+// Function to view our roles table in our SQL database
 function viewAllRoles() {
     console.clear();
     console.log(`SELECTED: View All Roles`);
@@ -103,6 +103,7 @@ function viewAllRoles() {
     });
 }
 
+// Function to add a role element into our Role Table in our SQL database
 function addRole() {
     console.clear();
     console.log(`SELECTED: Add Role`);
@@ -167,6 +168,7 @@ function addRole() {
     });
 }
 
+// Function to view our department table in our SQL database
 function viewAllDepartments() {
     console.clear();
     console.log(`SELECTED: View All Departments`);
@@ -175,8 +177,8 @@ function viewAllDepartments() {
                     department.id AS ID,
                     name as Name
                 FROM department;`;
+                
     // database querying for the department table
-
     let departments = [];
     db.query(sql, (error, rows) => {
         if (error){
@@ -192,10 +194,39 @@ function viewAllDepartments() {
     });
 }
 
+// Function to add a department element into our SQL database
 function addDepartment() {
     console.clear();
-    console.log(`SELECTED: Add Department`);
-    mainMenu();
+    console.log(`Current Departments
+    `);
+
+    const viewSQL = `
+    SELECT
+        id AS ID,
+        name AS Name
+    FROM department;
+    `;
+    db.query(viewSQL, (error, departments) => {
+        if (error) throw (error)
+        console.table(departments);
+
+        inquirer.prompt([{
+            type: `input`,
+            message: `Department Name`,
+            name: `name`,
+        }]).then((result) => {
+            let insertSQL = `INSERT INTO department(name)VALUES(?)`;
+            db.query(insertSQL, result.name, (error, rows) => {
+                if (error) throw (error);
+                console.clear();
+                db.query(viewSQL, (error, result) => {
+                    if (error) throw (error);
+                    console.table(result);
+                    mainMenu();
+                })
+            });
+        });
+    });
 }
 
 function mainMenu() {
