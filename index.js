@@ -105,19 +105,7 @@ function addEmployee() {
                 const managerID = managers.filter((managers) => managers.manager_name === result.manager)[0].id;
                 const roleID = roles.filter((roles) => roles.title === result.role)[0].id;
 
-                // console.log(`Should be 1: ${managerID}`);
-                // console.log(`Should be 2: ${roleID}`);
-                console.log(`
-                    ${result.firstName},
-                    ${result.lastName},
-                    ${roleID},
-                    ${managerID}
-                    `);
-                
-                let insertSQL = `
-                    USE company_db;
-                    INSERT INTO employee(first_name, last_name, role_id, manager_id)
-                    VALUES(?, ?, ?, ?)`;
+                let insertSQL = `INSERT INTO employee SET ?`;
                 let data = {
                     first_name: result.firstName,
                     last_name: result.lastName,

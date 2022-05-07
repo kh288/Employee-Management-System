@@ -32,13 +32,13 @@ VALUES
 
 
 -- SELECT * FROM company.employee;
-INSERT INTO employee(first_name, last_name, role_id, manager_id)
-VALUES 
-    ("John", "Doe", 1, 1);
-    
 INSERT INTO employee(first_name, last_name, role_id)
 VALUES 
-    ("Kevin", "Hernandez", 2);
+    ("John", "Doe", 1);
+    
+INSERT INTO employee(first_name, last_name, role_id, manager_id)
+VALUES 
+    ("Kevin", "Hernandez", 2, 1);
 
 -- |KEYS FOR EMPLOYEE|
 -- |-----------------|
