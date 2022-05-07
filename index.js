@@ -126,7 +126,50 @@ function updateEmployeeRole() {
     console.clear();
     console.log(`SELECTED: Update Employee Role
     `);
-    mainMenu();
+    db.query(`SELECT * FROM company_db.role;`, (error, roles) => {
+        if (error) throw (error);
+        console.log(roles);
+        db.query(`SELECT * FROM company_db.employee;`, (error, employees) => {
+            if (error) throw (error);
+            console.log("Updating Existing Employee's Role");
+            console.log(employees);
+            
+            inquirer.prompt([{
+                type: `list`,
+                message: `Which employee's role would you like to change?`,
+                choices: () =>
+                    employees.map((result) => result.first_name),
+                name: `employee`,
+            },{
+                type: `list`,
+                message: `What role would you like to change to?`,
+                choices: () =>
+                    roles.map((result) => result.title),
+                name: `role`,
+            }]).then((result) => {
+                let sql = `
+                UPDATE company_db.employees
+                SET role_id = ?
+                WHERE id = ?`;
+
+                console.log(result.employee);
+                console.log(result.role);
+
+                console.log("This should display")
+                console.log(employees[0].)
+
+                // let promptData = [, employeeID];
+
+                // db.query(sql, promptData, (error, rows) => {
+                //     if (error) throw(error);
+                //     else {
+                //         console.log(`Successfully updated ${result.employee} to ${result.role}`);
+                //         mainMenu();
+                //     }
+                // })
+            });
+        });
+    });
 }
 // Function to view our roles table in our SQL database
 function viewAllRoles() {
@@ -161,15 +204,12 @@ function addRole() {
     console.clear();
     console.log(`SELECTED: Add Role
     `);
-    // DELETE FROM `company`.`role` WHERE (`id` = '4');
-
     // GET DEPARTMENT LIST
     // STORE DEPARTMENT LIST INTO CHOICES FOR INQUIRER
     // database querying for the department table
     db.query(`SELECT * FROM department;`, (error, rows) => {
         if (error) throw (error);
         console.log("Adding a new role");
-        
         // Prompt user for adding role data
         inquirer.prompt([{
             type: `input`,
