@@ -128,11 +128,11 @@ function updateEmployeeRole() {
     `);
     db.query(`SELECT * FROM company_db.role;`, (error, roles) => {
         if (error) throw (error);
-        console.log(roles);
+        // console.log(roles);
         db.query(`SELECT * FROM company_db.employee;`, (error, employees) => {
             if (error) throw (error);
             console.log("Updating Existing Employee's Role");
-            console.log(employees);
+            // console.log(employees);
             
             inquirer.prompt([{
                 type: `list`,
@@ -147,26 +147,37 @@ function updateEmployeeRole() {
                     roles.map((result) => result.title),
                 name: `role`,
             }]).then((result) => {
-                let sql = `
-                UPDATE company_db.employees
-                SET role_id = ?
-                WHERE id = ?`;
+                // looks through roles from SQL and sets the ID of the role chosen in inquierer
+                var roleID;
+                for (var i = 0; i < roles.length; i++) {
+                    if (roles[i].title === result.role) {
+                        roleID = roles[i].id;
+                    }
+                }
 
-                console.log(result.employee);
-                console.log(result.role);
+                // looks through employees from SQL and sets the ID of the employee chosen in inquierer
+                var employeeID;
+                for (var i = 0; i < employees.length; i++) {
+                    if (employees[i].first_name === result.employee) {
+                        employeeID = employees[i].id;
+                    }
+                }
 
-                console.log("This should display")
-                console.log(employees[0].)
+                const insertSQL = `UPDATE employee SET ? WHERE ?`;
 
-                // let promptData = [, employeeID];
+                let data = [{
+                        role_id: roleID,
+                    },{
+                        id: employeeID,
+                    }];
 
-                // db.query(sql, promptData, (error, rows) => {
-                //     if (error) throw(error);
-                //     else {
-                //         console.log(`Successfully updated ${result.employee} to ${result.role}`);
-                //         mainMenu();
-                //     }
-                // })
+                db.query(insertSQL, data, (error, rows) => {
+                    if (error) throw(error);
+                    else {
+                        console.log(`Successfully updated ${result.employee} to ${result.role}`);
+                        mainMenu();
+                    }
+                })
             });
         });
     });
@@ -324,6 +335,7 @@ function addDepartment() {
     });
 }
 
+// All the prompts for questions
 function mainMenu() {
     inquirer.prompt([{
         type: `list`,
