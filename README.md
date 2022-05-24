@@ -25,7 +25,7 @@ In this app, you have the ability to do the following
 
 <figcaption align="center">Link to video example</figcaption>
 
-[![Social Burger Site](/assets/00-video-preview.png)](
+[![Employee Management System Demo](/assets/00-video-preview.png)](
 https://watch.screencastify.com/v/QLsp0jUgfTUlUDhDUJwy)
 
 ![Image of the main menu](/assets/01-menu.png)
